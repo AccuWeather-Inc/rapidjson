@@ -73,6 +73,7 @@ private:
             current_ = buffer_;
 
             if (readCount_ < bufferSize_) {
+                // NOLINTNEXTLINE(clang-analyzer-security.ArrayBound)
                 buffer_[readCount_] = '\0';
                 ++bufferLast_;
                 eof_ = true;
