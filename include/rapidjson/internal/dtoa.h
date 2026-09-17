@@ -36,6 +36,10 @@ inline void GrisuRound(char* buffer, int len, uint64_t delta, uint64_t rest, uin
     while (rest < wp_w && delta - rest >= ten_kappa &&
            (rest + ten_kappa < wp_w ||  /// closer
             wp_w - rest > rest + ten_kappa - wp_w)) {
+        // DigitGen only calls GrisuRound after writing at least one digit, and
+        // this touches just that digit, so it is never uninitialized. The analyzer
+        // loses track of it because the buffer can come from a realloc'd Stack.
+        // NOLINTNEXTLINE(clang-analyzer-core.uninitialized.Assign)
         buffer[len - 1]--;
         rest += ten_kappa;
     }
@@ -189,6 +193,10 @@ inline char* Prettify(char* buffer, int length, int k, int maxDecimalPlaces) {
             // When maxDecimalPlaces = 2, 0.123 -> 0.12, 0.102 -> 0.1
             // Remove extra trailing zeros (at least one) after truncation.
             for (int i = maxDecimalPlaces + 1; i > 2; i--)
+                // The guard above (length - kk > maxDecimalPlaces) puts the last
+                // written byte at index (length - kk) + 1, which is at least two
+                // past the highest index read here, so this read is in bounds.
+                // NOLINTNEXTLINE(clang-analyzer-security.ArrayBound)
                 if (buffer[i] != '0')
                     return &buffer[i + 1];
             return &buffer[3]; // Reserve one zero

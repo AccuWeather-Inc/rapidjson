@@ -24,6 +24,12 @@ RAPIDJSON_DIAG_PUSH
 RAPIDJSON_DIAG_OFF(c++98-compat)
 #endif
 
+#if defined(__clang_analyzer__)
+#define CLANG_ASSERT(x) assert((x))
+#else
+#define CLANG_ASSERT(x) ((void)0)
+#endif
+
 RAPIDJSON_NAMESPACE_BEGIN
 namespace internal {
 
@@ -184,6 +190,8 @@ private:
         // Only expand the capacity if the current stack exists. Otherwise just create a stack with initial capacity.
         size_t newCapacity;
         if (stack_ == 0) {
+            CLANG_ASSERT(stackTop_ == 0);
+            CLANG_ASSERT(stackEnd_ == 0);
             if (!allocator_)
                 ownAllocator_ = allocator_ = RAPIDJSON_NEW(Allocator)();
             newCapacity = initialCapacity_;
