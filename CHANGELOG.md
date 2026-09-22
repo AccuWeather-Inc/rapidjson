@@ -2,6 +2,9 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 2.0.4 - 2026-09-22
+*  Install headers
+
 ## 2.0.3 - 2026-09-17
 *  Silence clang-tidy static analyzer false positives
 
