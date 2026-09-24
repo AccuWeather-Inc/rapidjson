@@ -25,6 +25,7 @@ RAPIDJSON_DIAG_OFF(c++98-compat)
 #endif
 
 #if defined(__clang_analyzer__)
+#include <cassert>
 #define CLANG_ASSERT(x) assert((x))
 #else
 #define CLANG_ASSERT(x) ((void)0)

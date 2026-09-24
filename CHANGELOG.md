@@ -2,6 +2,9 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 2.0.5 - 2026-09-24
+* Fix <cassert> include
+
 ## 2.0.4 - 2026-09-22
 *  Install headers
 
